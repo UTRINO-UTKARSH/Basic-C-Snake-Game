@@ -13,6 +13,7 @@ private:
     char direction;               // 'W', 'A', 'S', 'D'
     pair<int, int> fruit;         // fruit position
     int score;
+    int speed;
 
 public:
     void render();                    // creates the area to play (DONE)
@@ -24,6 +25,7 @@ public:
     void checkFruit();                // eating logic(done)
     void gameOver();                  // reset / end(done)
     void gotoxy(int x , int y);
+    int getspeed(){return speed;};
 };
 
 // stops the flicker by re-writting the console cursor position
@@ -39,6 +41,7 @@ void snake_desc::checkFruit()
 {
     if(snake[0] == fruit){
         score++;
+        speed = max(50,speed-10);
         spawnFruit();
     }
 }
@@ -69,8 +72,8 @@ void snake_desc::gameOver(){
     cout << "#   Final Score: " << score << "   #\n";
     cout << "########################\n";
     PlaySound(TEXT("./Game.wav"), NULL, SND_SYNC | SND_FILENAME);
-    Sleep(100);
-    exit(0);
+    // Sleep(100);
+    // exit(0);
 }
 
 void snake_desc::render(){
@@ -81,7 +84,7 @@ void snake_desc::render(){
                 cout << "#  ";
             }
             else if(x==fruit.first && y == fruit.second){
-                cout<<"@";
+                cout<<"*";
             }
             else{
                 bool isSnake = false;
@@ -92,7 +95,7 @@ void snake_desc::render(){
                     }
                 }
                 if (isSnake){
-                    cout << "O";
+                    cout << "@";
                 }
                 else{
                     cout << " ";
@@ -125,6 +128,7 @@ void snake_desc::initialize()
     snake.clear();
     score = 0;
     direction = 'D';
+    speed = 200;
     snake.push_back({10, 10});
     snake.push_back({10, 9});
     snake.push_back({10, 8});
@@ -167,7 +171,7 @@ int main()
 {
     snake_desc ss;
     ss.initialize();
-    cout<<"\n\n\n\n";
+    char d = ' ';
     while (true)
     {
         if (_kbhit())
@@ -194,12 +198,20 @@ int main()
         }
         if (ss.checkCollision()){
             ss.gameOver();
+            cout<<"Press R to restart and Q to Quit: ";
+            cin>>d;
+            d = toupper(d);
+            if(d=='R'){
+                
+                ss.initialize();
+                continue;
+            }
             break;
         }
         ss.gotoxy(0,0);
         ss.move();
         ss.checkFruit();
         ss.render();
-        Sleep(200);
+        Sleep(ss.getspeed());
     }
 }
