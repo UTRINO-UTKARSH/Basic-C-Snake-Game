@@ -37,37 +37,36 @@ public:
 void snake_desc::showScreen()
 {
     system("cls");
-    // ASCII art title - you can customize this
+   
     gotoxy(10, 2);
-    cout << R"(
+    cout<<"\t\t\t" << R"(
   ____  _   _    _    _  _______ 
  / ___|| \ | |  / \  | |/ / ____|
  \___ \|  \| | / _ \ | ' /|  _|  
   ___) | |\  |/ ___ \| . \| |___ 
  |____/|_| \_/_/   \_\_|\_\_____|
-    )";
+    )"<<"\n";
 
-    setColor(4); // red
-    cout << " Welcome to the Game "<<endl;
-    setColor(2); // green
-    cout << " Enjoy your time "<<endl;
-    setColor(7); // reset to white
-
-    int selected = 0; // 0=easy, 1=medium, 2=hard
+    setColor(4); 
+    cout << "\t\t Welcome to the Game... "<<endl;
+    setColor(2); 
+    cout << "\t\t Enjoy your time :) \n"<<endl;
+    setColor(7); 
+    
+    int selected = 0; 
     string options[] = {"easy", "medium", "hard"};
 
     while (true)
     {
-        // draw menu
-        gotoxy(20, 10);
-        cout << "Choose your difficulty:";
+        gotoxy(23, 10);
+        cout << "\n \t \tChoose your difficulty:";
 
         for (int i = 0; i < 3; i++)
         {
-            gotoxy(22, 12 + i);
+            gotoxy(23, 12 + i);
             if (i == selected)
             {
-                cout << "> " << options[i] << " <"; // highlight selected
+                cout << "> " << options[i] << " <"; 
             }
             else
             {
@@ -75,12 +74,11 @@ void snake_desc::showScreen()
             }
         }
 
-        // handle input
         char key = _getch();
         if (key == 72)
-            selected = max(0, selected - 1); // up arrow
+            selected = max(0, selected - 1);
         if (key == 80)
-            selected = min(2, selected + 1); // down arrow
+            selected = min(2, selected + 1); 
         if (key == '\r')
         { // enter to confirm
             difficulty = selected;
@@ -88,7 +86,6 @@ void snake_desc::showScreen()
         }
     }
 
-    // set speed based on difficulty
     if (difficulty == 0)
         speed = 200; // easy
     else if (difficulty == 1)
